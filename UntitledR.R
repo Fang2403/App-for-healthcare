@@ -8,6 +8,9 @@ data <- read_csv("data/healthcare-dataset-stroke-data.csv")
 data$heart_disease <- as.factor(data$heart_disease)
 data$hypertension <- as.factor(data$hypertension)
 data$stroke <- as.factor(data$stroke)
+data$bmi <- as.numeric(data$bmi)
+mean(data$bmi, na.rm=TRUE)
+cor(na.omit(data)[, c("age", "bmi")])
 
 var=c("age", "heart_disease", "gender")
 

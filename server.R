@@ -5,6 +5,7 @@ library(dplyr)
 library(summarytools)
 library(DT)
 library(caret)
+library(corrplot)
 
 stroke_data <- read_csv("data/healthcare-dataset-stroke-data.csv")
 stroke_data$heart_disease <- as.factor(stroke_data$heart_disease)
@@ -15,7 +16,7 @@ stroke_data$ever_married <- as.factor(stroke_data$ever_married)
 stroke_data$work_type <- as.factor(stroke_data$work_type)
 stroke_data$Residence_type <- as.factor(stroke_data$Residence_type)
 stroke_data$smoking_status <- as.factor(stroke_data$smoking_status)
-stroke_data$bmi <- as.factor(stroke_data$bmi)
+stroke_data$bmi <- as.numeric(stroke_data$bmi)
 
 shinyServer(function(input, output) {
 
@@ -24,6 +25,15 @@ shinyServer(function(input, output) {
     output$descr <- renderPrint(
         descr(stroke_data[ ,input$num_var])
     )
+    output$cor <- renderPlot({
+        if(input$cor==TRUE){
+            corrplot(cor(na.omit(stroke_data)[, input$num_var]), type="upper", tl.pos="lt", cl.cex=0.8)
+            corrplot(cor(na.omit(stroke_data)[, input$num_var]), type="lower", method="number", add=TRUE, 
+                     diag=FALSE, tl.pos="n")
+        }
+        
+    })
+    
    #one-way
     output$one_way <- renderDataTable(
         freq(stroke_data[ ,input$fact_var])  
@@ -68,9 +78,28 @@ shinyServer(function(input, output) {
               }
         } 
     })
+    # model info
     
+    output$log <- renderUI({
+        withMathJax(helpText(
+            "$$log(\\frac{P(stoke)}{1-P(stroke)})=\\beta_0+\\beta*X$$"
+        ))
+    })
+    
+    output$gini <- renderUI({
+        withMathJax(helpText(
+            "$$Gini: sp*(1-p)$$"
+        ))
+    })
+    
+    output$entro <- renderUI({
+        withMathJax(helpText(
+            "$$Deviance: -2p*log(p)-2*(1-p)log(1-p)$$"
+        ))
+    })
+
     # machine learning
-    #logidtic regression
+    #logistic regression
     
     split <- eventReactive(input$logrprop, {
         set.seed(10)
@@ -82,6 +111,12 @@ shinyServer(function(input, output) {
     })
 
      lrmodel <- eventReactive(input$fitmodel, {
+         # Create a Progress object
+         progress <- shiny::Progress$new()
+         # Make sure it closes when we exit this reactive, even if there's an error
+         on.exit(progress$close())
+         
+         progress$set(message = "Making logistic model", value = 10)
         lr_fit = train(as.formula(paste("stroke ~", paste(input$logrvar, collapse= "+"))),  
                        data=split()$train, method="glm", family="binomial", 
                        trControl=trainControl(method="cv", input$k))
@@ -92,6 +127,12 @@ shinyServer(function(input, output) {
      })
      #tree
      treemodel <- eventReactive(input$fitmodel,{
+         # Create a Progress object
+         progress <- shiny::Progress$new()
+         # Make sure it closes when we exit this reactive, even if there's an error
+         on.exit(progress$close())
+         
+         progress$set(message = "Making tree model", value = 10)
          tree_fit = train(as.formula(paste("stroke ~", paste(input$logrvar, collapse= "+"))),  
                         data=split()$train, method="rpart",
                         trControl=trainControl(method="cv", input$k))
@@ -101,6 +142,12 @@ shinyServer(function(input, output) {
      })
      #random forest
      randomForestmodel <- eventReactive(input$fitmodel,{
+         # Create a Progress object
+         progress <- shiny::Progress$new()
+         # Make sure it closes when we exit this reactive, even if there's an error
+         on.exit(progress$close())
+         
+         progress$set(message = "Making random forest model", value = 10)
          randomForest_fit = train(as.formula(paste("stroke ~", paste(input$logrvar, collapse= "+"))),  
                           data=split()$train, method="rf", ntree=10,
                           trControl=trainControl(method="cv", input$k),
@@ -180,9 +227,9 @@ shinyServer(function(input, output) {
         }
     })
     
-    output$downloaddata <- downloadHandler(
+    output$downloadData <- downloadHandler(
         filename <- function(){
-            paste("data-", Sys.Date(), ".csv", sep = "")
+            paste0(input$showdata, ".csv")
         },
         content <- function(file){
             if(input$showdata=="Full"){
