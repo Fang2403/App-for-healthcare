@@ -14,6 +14,8 @@ The app will have 4 pages. The first "About" page describes the data, its source
 
 * dplyr -- manipulating data
 
+* corrplot -- plotting correlation
+
 * summarytools -- generating numerical summary
 
 * DT -- create interactive table
@@ -22,7 +24,7 @@ The app will have 4 pages. The first "About" page describes the data, its source
 
 * Please use following code to install required packages:
 
-`install.packages(c("shiny", "readr", "dplyr", "summarytools", "DT", "caret"))`
+`install.packages(c("shiny", "readr", "dplyr", "summarytools", "DT", "caret", "corrplot"))`
 
 ## Run
 
