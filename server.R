@@ -276,26 +276,22 @@ shinyServer(function(input, output) {
 
     # data panel
      
-     selected <- reactive({
-         selected <- stroke_data[, input$cols]
-     })
-     filted <- eventReactive(input$submit1,{
-         filted <- stroke_data %>% filter_(input$rows)
-     })
-     both <- eventReactive(input$submit2,{
-             filted <- selected() %>% filter_(input$both)
+     data_table1 <- eventReactive(input$view,{
+         if(input$showdata=="Full Data"){
+             data = stroke_data
+         } else if(input$data_cols==""){
+             data = stroke_data %>% filter_(input$data_rows)
+         } else {
+             if(input$data_rows==""){
+                 data = stroke_data[, input$data_cols]
+             } else {
+                 data = stroke_data %>% filter_(input$data_rows) %>% `[`(input$data_cols)  
+             }
+         }
      })
 
     output$table1 <- renderDataTable({
-        if (input$showdata=="Full"){
-            stroke_data
-        } else if (input$showdata=="Columns"){
-            selected()
-        } else if (input$showdata=="Rows"){
-              filted()
-        } else {
-            both
-        }
+        data_table1()
     })
     
     output$downloadData <- downloadHandler(
@@ -303,7 +299,7 @@ shinyServer(function(input, output) {
             paste0(input$showdata, ".csv")
         },
         content <- function(file){
-            if(input$showdata=="Full"){
+            if(input$showdata=="Full Data"){
                 write.csv(stroke_data, file, row.names = TRUE)
             } else if (input$showdata=="Columns") {
                 write.csv(selected(), file, row.names = TRUE)
