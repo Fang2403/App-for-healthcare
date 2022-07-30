@@ -24,7 +24,7 @@ The app will have 4 pages. The first "About" page describes the data, its source
 
 `install.packages(c("shiny", "readr", "dplyr", "summarytools", "DT", "caret"))`
 
-## Run code
+## Run
 
 Please run following code in the R console to launch the app:
 
