@@ -418,8 +418,7 @@ shinyUI( navbarPage( title="Stroke",
                  ), 
                  
                  mainPanel(
-                     dataTableOutput("table1"),
-                     verbatimTextOutput("a")
+                     dataTableOutput("table1")
                      )
              )
     )      

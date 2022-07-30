@@ -293,10 +293,6 @@ shinyServer(function(input, output) {
              }
          }
      })
-     
-     output$a <- renderPrint({
-         input$data_cols
-     })
 
     output$table1 <- renderDataTable({
         data_table1()
