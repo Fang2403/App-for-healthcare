@@ -22,9 +22,19 @@ shinyServer(function(input, output) {
 
     #EDA descriptive
     #descriptive
+    
+    data <- eventReactive(input$go1, {
+        if(input$filter1=="Yes"){
+            data = stroke_data %>% filter_(input$num_var_rows)
+        } else {
+            data = stroke_data
+        }
+    })
+    
     output$descr <- renderPrint(
-        descr(stroke_data[ ,input$num_var])
+        descr(data()[ ,input$num_var])
     )
+    
     output$cor <- renderPlot({
         if(input$cor==TRUE){
             corrplot(cor(na.omit(stroke_data)[, input$num_var]), type="upper", tl.pos="lt", cl.cex=0.8)
@@ -35,47 +45,108 @@ shinyServer(function(input, output) {
     })
     
    #one-way
-    output$one_way <- renderDataTable(
-        freq(stroke_data[ ,input$fact_var])  
-    )
+    data2 <- eventReactive(input$go2, {
+        if(input$filter2=="Yes"){
+            data = stroke_data %>% filter_(input$one_way_rows)
+        } else {
+            data = stroke_data
+        }
+    })
+    output$one_way <- renderTable({
+        freq(data2()[ ,input$fact_var])
+    })
     
     #two-way
-    output$frequency <- renderDataTable(
-       table(stroke_data[[input$fact_var1]],stroke_data[[input$fact_var2]]) 
+    data3 <- eventReactive(input$go3, {
+        if(input$filter3=="Yes"){
+            data = stroke_data %>% filter_(input$two_way_rows)
+        } else {
+            data = stroke_data
+        }
+    })
+    output$frequency <- renderTable(
+       table(data3()[,c(input$fact_var1,input$fact_var2)]) 
     )
 
     
     # graphic panel
+    data4 <- eventReactive(input$hist, {
+        if(input$fil1=="Yes"){
+            data = stroke_data %>% filter_(input$plotNumVar3)
+        } else {
+            data = stroke_data
+        }
+    })
+    
+    histogram <- eventReactive(input$hist,{
+        if(input$group=="No"){
+            ggplot(data4(), aes(x=!!sym(input$plotNumVar))) + 
+                geom_histogram()
+        } else {
+            ggplot(data4(), aes(x=!!sym(input$plotNumVar))) + 
+                geom_histogram(aes(fill=!!sym(input$plotNumVar2)), position="dodge")
+        }
+    })
+    
+    data5 <- eventReactive(input$bar, {
+        if(input$fil2=="Yes"){
+            data = stroke_data %>% filter_(input$plotFactVar2)
+        } else {
+            data = stroke_data
+        }
+    })
+    
+    barplot <- eventReactive(input$bar,{
+        ggplot(data5(), aes(x=!!sym(input$plotFactVar))) + 
+            geom_bar()
+    })
+    
+    data6 <- eventReactive(input$scatter, {
+        if(input$fil3=="Yes"){
+            data = stroke_data %>% filter_(input$plotVar4)
+        } else {
+            data = stroke_data
+        }
+    })
+    
+    scatterplot <- eventReactive(input$scatter,{
+        if(input$group2=="Yes"){
+            ggplot(data6(), aes(x=!!sym(input$plotVar1), y=!!sym(input$plotVar2))) + 
+                geom_point(aes(color=!!sym(input$plotVar3)))
+        } else {
+            ggplot(data6(), aes(x=!!sym(input$plotVar1), y=!!sym(input$plotVar2))) + 
+                geom_point()
+        }
+    })
+    
+    data7 <- eventReactive(input$box, {
+        if(input$fil4=="Yes"){
+            data = stroke_data %>% filter_(input$plotbox3)
+        } else {
+            data = stroke_data
+        }
+    })
+    
+    boxplot <- eventReactive(input$box,{
+        if(input$group3=="Yes"){
+            ggplot(data7(), aes(x=!!sym(input$plotbox2), y=!!sym(input$plotbox))) +
+                geom_boxplot()
+        } else {
+            ggplot(stroke_data, aes(y=!!sym(input$plotbox))) +
+                geom_boxplot()
+        }
+    })
     
     output$plot <- renderPlot({
         if(input$plotoption == "Histogram"){
-            if(!is.na(input$plotNumVar2)){
-                ggplot(stroke_data, aes(x=!!sym(input$plotNumVar))) + 
-                    geom_histogram(aes(fill=!!sym(input$plotNumVar2)), position="dodge")
-            } else {
-                ggplot(stroke_data, aes(x=!!sym(input$plotNumVar))) + 
-                    geom_histogram()
-            }
+            histogram()
              
         } else if(input$plotoption == "BarPlot"){
-            ggplot(stroke_data, aes(x=!!sym(input$plotFactVar))) + 
-            geom_bar()
+            barplot()
         } else if(input$plotoption == "Scatter"){
-            if(!is.na(input$plotVar3)){
-                ggplot(stroke_data, aes(x=!!sym(input$plotVar1), y=!!sym(input$plotVar2))) + 
-                    geom_point(aes(color=!!sym(input$plotVar3)))
-            } else {
-                ggplot(stroke_data, aes(x=!!sym(input$plotVar1), y=!!sym(input$plotVar2))) + 
-                    geom_point()
-            }
+            scatterplot()
         } else if(input$plotoption == "BoxPlot"){
-              if(!is.na(input$plotNumVar3)){
-                  ggplot(stroke_data, aes(x=!!sym(input$plotNumVar3), y=!!sym(input$plotNumVar4))) +
-                             geom_boxplot()
-              } else {
-                  ggplot(stroke_data, aes(x=!!sym(input$plotNumVar3))) +
-                      geom_boxplot()
-              }
+            boxplot()
         } 
     })
     # model info
@@ -178,31 +249,31 @@ shinyServer(function(input, output) {
                                                     split()$test$stroke)$overall})
     # prediction
      
+     new_data <- eventReactive(input$go, {
+         data.frame(gender=input$gender, age=input$age, hypertension=input$hyper, heart_disease=input$disease, ever_married=input$marry, work_type=input$work, Residence_type=input$residence, avg_glucose_level=input$avg, bmi=input$bmi, smoking_status=input$smoke)
+     })
+     
+
      output$prediction <- renderPrint({
+         # Create a Progress object
+         progress <- shiny::Progress$new()
+         # Make sure it closes when we exit this reactive, even if there's an error
+         on.exit(progress$close())
+         
+         progress$set(message = "Predicting", value = 20)
          if (input$preModel=="Logistic Regression"){
-             pred <- predict(lrmodel(), stroke_data)
-             return(confusionMatrix(pred, stroke_data$stroke)$table)
+             pred <- predict(lrmodel(), new_data())
+             return(pred)
          } else if(input$preModel=="Classification Tree"){
-             pred <- predict(treemodel(), stroke_data)
-             confusionMatrix(pred, stroke_data$stroke)$table
+             pred <- predict(treemodel(), new_data())
+             return(pred)
          } else {
-             pred <- predict(randomForestmodel(), stroke_data)
-             confusionMatrix(pred, stroke_data$stroke)$table
+             pred <- predict(randomForestmodel(), new_data())
+             return(pred)
          }
      })
      
-     output$accur <- renderPrint({
-         if (input$preModel=="Logistic Regression"){
-             pred <- predict(lrmodel(), stroke_data)
-             return(confusionMatrix(pred, stroke_data$stroke)$overall)
-         } else if(input$preModel=="Classification Tree"){
-             pred <- predict(treemodel(), stroke_data)
-             confusionMatrix(pred, stroke_data$stroke)$overall
-         } else {
-             pred <- predict(randomForestmodel(), stroke_data)
-             confusionMatrix(pred, stroke_data$stroke)$overall
-         }
-     })
+
     # data panel
      
      selected <- reactive({

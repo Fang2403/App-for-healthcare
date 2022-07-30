@@ -25,3 +25,8 @@ randomForest_fit = train(as.formula(paste("stroke ~", paste(var, collapse= "+"))
 pred <- predict(randomForest_fit, test_data)
 confusionMatrix(pred, test_data$stroke)
 str(confusionMatrix(pred, test_data$stroke))
+
+a <- data.frame(gender="Female", age=80, hypertension="1", heart_disease="1", ever_married="No", work_type="Private", Residence_type="Urban", avg_glucose_level=220, bmi=36, smoking_status="smokes")
+predict(randomForest_fit, a)
+
+append(c("1"),"2")
