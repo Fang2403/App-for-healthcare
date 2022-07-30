@@ -412,12 +412,14 @@ shinyUI( navbarPage( title="Stroke",
                                                               "ever_married=='Yes'","ever_married=='No'" ,
                                                               "Residence_type=='Urban'", "Residence_type=='Rural'",
                                                               "stroke==0", "stroke==1"), selected="")),
-                     actionButton("view", "View Data"),
+                     br(),
+                     h4("Save the data shown on the right as a file"),
                      downloadButton("downloadData", "Download as .csv file")
                  ), 
                  
                  mainPanel(
-                     dataTableOutput("table1")
+                     dataTableOutput("table1"),
+                     verbatimTextOutput("a")
                      )
              )
     )      

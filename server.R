@@ -25,7 +25,7 @@ shinyServer(function(input, output) {
     
     data <- eventReactive(input$go1, {
         if(input$filter1=="Yes"){
-            data = stroke_data %>% filter_(input$num_var_rows)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$num_var_rows)))
         } else {
             data = stroke_data
         }
@@ -47,7 +47,7 @@ shinyServer(function(input, output) {
    #one-way
     data2 <- eventReactive(input$go2, {
         if(input$filter2=="Yes"){
-            data = stroke_data %>% filter_(input$one_way_rows)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$one_way_rows)))
         } else {
             data = stroke_data
         }
@@ -59,7 +59,7 @@ shinyServer(function(input, output) {
     #two-way
     data3 <- eventReactive(input$go3, {
         if(input$filter3=="Yes"){
-            data = stroke_data %>% filter_(input$two_way_rows)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$two_way_rows)))
         } else {
             data = stroke_data
         }
@@ -72,7 +72,7 @@ shinyServer(function(input, output) {
     # graphic panel
     data4 <- eventReactive(input$hist, {
         if(input$fil1=="Yes"){
-            data = stroke_data %>% filter_(input$plotNumVar3)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$plotNumVar3)))
         } else {
             data = stroke_data
         }
@@ -90,7 +90,7 @@ shinyServer(function(input, output) {
     
     data5 <- eventReactive(input$bar, {
         if(input$fil2=="Yes"){
-            data = stroke_data %>% filter_(input$plotFactVar2)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$plotFactVar2)))
         } else {
             data = stroke_data
         }
@@ -103,7 +103,7 @@ shinyServer(function(input, output) {
     
     data6 <- eventReactive(input$scatter, {
         if(input$fil3=="Yes"){
-            data = stroke_data %>% filter_(input$plotVar4)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$plotVar4)))
         } else {
             data = stroke_data
         }
@@ -121,7 +121,7 @@ shinyServer(function(input, output) {
     
     data7 <- eventReactive(input$box, {
         if(input$fil4=="Yes"){
-            data = stroke_data %>% filter_(input$plotbox3)
+            data = stroke_data %>% filter(eval(rlang::parse_expr(input$plotbox3)))
         } else {
             data = stroke_data
         }
@@ -276,18 +276,26 @@ shinyServer(function(input, output) {
 
     # data panel
      
-     data_table1 <- eventReactive(input$view,{
+     data_table1 <- reactive({
          if(input$showdata=="Full Data"){
              data = stroke_data
-         } else if(input$data_cols==""){
-             data = stroke_data %>% filter_(input$data_rows)
+         } else if(is.null(input$data_cols)){
+             if(input$data_rows==""){
+                 data=NULL
+             } else {
+                 data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows)))
+             }
          } else {
              if(input$data_rows==""){
                  data = stroke_data[, input$data_cols]
              } else {
-                 data = stroke_data %>% filter_(input$data_rows) %>% `[`(input$data_cols)  
+                 data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows))) %>% `[`(input$data_cols)  
              }
          }
+     })
+     
+     output$a <- renderPrint({
+         input$data_cols
      })
 
     output$table1 <- renderDataTable({
@@ -299,13 +307,8 @@ shinyServer(function(input, output) {
             paste0(input$showdata, ".csv")
         },
         content <- function(file){
-            if(input$showdata=="Full Data"){
-                write.csv(stroke_data, file, row.names = TRUE)
-            } else if (input$showdata=="Columns") {
-                write.csv(selected(), file, row.names = TRUE)
-            } else {
-                write.csv(filted(), file, row.names = TRUE)
-            }
+            write.csv(data_table1(), file, row.names = TRUE)
+            
         }
     )
     
