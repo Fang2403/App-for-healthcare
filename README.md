@@ -20,13 +20,15 @@ The application will consist of an introduction page, a data exploration page, a
 
 * summarytools -- providing a coherent set of functions centered on data exploration and simple reporting
 
+* ggplot2 -- declaratively creating graphics, based on the grammar of graphics.
+
 * DT -- providing an R interface to the JavaScript library DataTables. R data objects (matrices or data frames) can be displayed as tables on HTML pages, and DataTables provides filtering, pagination, sorting, and many other features in the tables.
 
 * caret --a set of functions that attempt to streamline the process for creating predictive models
 
 Please use following code to install required packages:
 
-`install.packages(c("shiny", "readr", "dplyr", "summarytools", "DT", "caret", "corrplot"))`
+`install.packages(c("shiny", "readr", "dplyr", "ggplot2", "summarytools", "DT", "caret", "corrplot"))`
 
 ## Launch the app
 
