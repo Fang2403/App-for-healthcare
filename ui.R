@@ -2,6 +2,8 @@ library(shiny)
 library(readr)
 library(dplyr)
 library(DT)
+library(bslib)
+
 
 num_name <- list("age", "avg_glucose_level", "bmi")
 fact_name <- list("gender", "hypertension", "heart_disease", "ever_married", "work_type", "Residence_type",  "smoking_status", "stroke")
@@ -9,7 +11,7 @@ stroke_data <- read_csv("data/healthcare-dataset-stroke-data.csv")
 col_names <- names(stroke_data)
 
 shinyUI( navbarPage( title="Stroke",
-    
+    theme = bs_theme(),
     tabPanel(title="About",
         fluidRow(img(src="dataset-cover.jpg")),
         fluidRow(
@@ -295,33 +297,33 @@ shinyUI( navbarPage( title="Stroke",
                 fluidRow(actionButton("fitmodel", "Are you ready to fit the model?"),
                                 align="center"),
                 fluidRow(
-                    column(3,
-                           h4("Logistic Model Summary"),
-                           verbatimTextOutput("logroutput")
+                    h4("Logistic Model Summary"),
+                    verbatimTextOutput("logroutput")
                            ),
-                    column(3,
-                           h4("Classification Tree Summary"),
-                           verbatimTextOutput("treeoutput")
+                fluidRow(
+                    h4("Classification Tree Summary"),
+                    verbatimTextOutput("treeoutput")
                            ),
-                    column(3,
-                           h4("Random Forest Summary"),
-                           verbatimTextOutput("randomForestOutput"),
-                           verbatimTextOutput("varImportanceOutput"),
-                           plotOutput("importance")
+                fluidRow(
+                    h4("Random Forest Summary"),
+                    verbatimTextOutput("randomForestOutput"),
+                    column(6,
+                           verbatimTextOutput("varImportanceOutput")),
+                    column(6, 
+                           plotOutput("importance"))
                           ),
-                    column(3,
-                           h4("Performance on Test Data"),
-                           h5("Logistic Model"),
-                           verbatimTextOutput("confus1"),
-                           verbatimTextOutput("accuracy1"),
-                           h5("Classification Tree"),
-                           verbatimTextOutput("confus2"),
-                           verbatimTextOutput("accuracy2"),
-                           h5("Ranodm Forest"),
-                           verbatimTextOutput("confus3"),
-                           verbatimTextOutput("accuracy3")
+                fluidRow(
+                    h4("Performance on Test Data"),
+                    h5("Logistic Model"),
+                    verbatimTextOutput("confus1"),
+                    verbatimTextOutput("accuracy1"),
+                    h5("Classification Tree"),
+                    verbatimTextOutput("confus2"),
+                    verbatimTextOutput("accuracy2"),
+                    h5("Ranodm Forest"),
+                    verbatimTextOutput("confus3"),
+                    verbatimTextOutput("accuracy3")
                            )
-                )
             ),
             
             tabPanel(
