@@ -276,23 +276,27 @@ shinyServer(function(input, output) {
      
 
     # data panel
-
-    output$table1 <- renderDataTable({
-        if(input$showdata=="Full Data"){
-            data = stroke_data
-        } else if(is.null(input$data_cols)){
-            if(input$data_rows==""){
-                data=NULL
-            } else {
-                data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows)))
-            }
-        } else {
-            if(input$data_rows==""){
-                data = stroke_data[, input$data_cols]
-            } else {
-                data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows))) %>% `[`(input$data_cols)  
-            }
-        }
+     
+     view_data <- reactive({
+         if(input$showdata=="Full Data"){
+             data = stroke_data
+         } else if(is.null(input$data_cols)){
+             if(input$data_rows==""){
+                 data=NULL
+             } else {
+                 data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows)))
+             }
+         } else {
+             if(input$data_rows==""){
+                 data = stroke_data[, input$data_cols]
+             } else {
+                 data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows))) %>% `[`(input$data_cols)  
+             }
+         }
+     })
+   
+    output$view <- renderDataTable({
+        view_data()
     })
     
     output$downloadData <- downloadHandler(
@@ -300,7 +304,7 @@ shinyServer(function(input, output) {
             paste0(input$showdata, ".csv")
         },
         content <- function(file){
-            write.csv(data_table1(), file, row.names = TRUE)
+            write.csv(view_data(), file, row.names = TRUE)
             
         }
     )
