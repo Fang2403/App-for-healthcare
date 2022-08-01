@@ -54,7 +54,7 @@ shinyServer(function(input, output) {
         }
     })
     output$one_way <- renderTable({
-        freq(data2()[ ,input$fact_var])
+        table(data2()[ ,isolate(input$fact_var)])
     })
     
     #two-way
@@ -276,27 +276,23 @@ shinyServer(function(input, output) {
      
 
     # data panel
-     
-     data_table1 <- reactive({
-         if(input$showdata=="Full Data"){
-             data = stroke_data
-         } else if(is.null(input$data_cols)){
-             if(input$data_rows==""){
-                 data=NULL
-             } else {
-                 data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows)))
-             }
-         } else {
-             if(input$data_rows==""){
-                 data = stroke_data[, input$data_cols]
-             } else {
-                 data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows))) %>% `[`(input$data_cols)  
-             }
-         }
-     })
 
     output$table1 <- renderDataTable({
-        data_table1()
+        if(input$showdata=="Full Data"){
+            data = stroke_data
+        } else if(is.null(input$data_cols)){
+            if(input$data_rows==""){
+                data=NULL
+            } else {
+                data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows)))
+            }
+        } else {
+            if(input$data_rows==""){
+                data = stroke_data[, input$data_cols]
+            } else {
+                data = stroke_data %>% filter(eval(rlang::parse_expr(input$data_rows))) %>% `[`(input$data_cols)  
+            }
+        }
     })
     
     output$downloadData <- downloadHandler(
