@@ -1,5 +1,7 @@
 library(shiny)
 library(readr)
+library(dplyr)
+library(DT)
 
 num_name <- list("age", "avg_glucose_level", "bmi")
 fact_name <- list("gender", "hypertension", "heart_disease", "ever_married", "work_type", "Residence_type",  "smoking_status", "stroke")
@@ -432,7 +434,7 @@ shinyUI( navbarPage( title="Stroke",
                  ), 
                  
                  mainPanel(
-                     dataTableOutput("table1")
+                     DT::dataTableOutput("table1")
                      )
              )
     )      
