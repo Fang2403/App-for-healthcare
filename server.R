@@ -133,7 +133,7 @@ shinyServer(function(input, output) {
             ggplot(data7(), aes(x=!!sym(input$plotbox2), y=!!sym(input$plotbox))) +
                 geom_boxplot()
         } else {
-            ggplot(stroke_data, aes(y=!!sym(input$plotbox))) +
+            ggplot(data7(), aes(y=!!sym(input$plotbox))) +
                 geom_boxplot()
         }
     })
