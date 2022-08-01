@@ -13,11 +13,26 @@ shinyUI( navbarPage( title="Stroke",
         fluidRow(
             column(10,
                 h4("App Overview"),
-                   p("This is a web-based interactive Machine Learning multiple-page Shiny application. Through this app, users can explore the data via different type of numerical and graphical summaries. Users have options to choose variables to explore and type of plots and summaries to report. Users also have access to the full data, subset data with specific variables and conditions and to save them as local file. Logistic Regression, Classification Tree and Random Forest models are going to be built on the train data set with user chosen predictors. Their perfomance on test data set are availabel as well. Users can obtain predictions on new predictor values using built models. "))),
+                   p("This is a web-based interactive Machine Learning multiple-page Shiny application. Through this app, users can explore the data via different type of numerical and graphical summaries. Users have access to choose variables to explore and choose type of plots and summaries to report. Users also have access to the full data, subset data with specific variables and conditions and to save them as external file. Logistic Regression, Classification Tree and Random Forest models are going to be built on the train data set with user chosen predictors. Their perfomance on test data set are provided as well. Users can obtain predictions on new predictor values using built models."))),
         fluidRow(
             column(12,
                    h4("Data"),
-                   p("According to the World Health Organization (WHO) stroke is the 2nd leading cause of death globally, responsible for approximately 11% of total deaths. The data used here contains 5110 observations with 12 attributes like gender, age, various diseases, and smoking status from ", a("Kaggle", href="https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset"), ". Each row in the data provides relavant information about the patient. We hope to predict whether a patient is likely to get stroke based on the input parameters. "))),
+                   p("According to the World Health Organization (WHO) stroke is the 2nd leading cause of death globally, responsible for approximately 11% of total deaths. The data used here contains 5110 observations with 12 attributes like gender, age, various diseases, and smoking status from ", a("Kaggle", href="https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset"), ". Each row in the data provides relavant information about the patient. We hope to predict whether a patient is likely to get stroke based on the input parameters. "),
+                   p("Variable Information:"),
+                   tags$ul(
+                       tags$li(" id: unique identifier"),
+                       tags$li("gender: 'Male', 'Female' or 'Other'"),
+                       tags$li("age: age of the patient"),
+                       tags$li("hypertension: 0 if the patient doesn't have hypertension, 1 if the patient has hypertension"),
+                       tags$li("heart_disease: 0 if the patient doesn't have any heart diseases, 1 if the patient has a heart disease"),
+                       tags$li(" ever_married: 'No' or 'Yes'"),
+                       tags$li("work_type: 'children', 'Govt_jov', 'Never_worked', 'Private' or 'Self-employed'"),
+                       tags$li("Residence_type: 'Rural' or 'Urban'"),
+                       tags$li("avg_glucose_level: average glucose level in blood"),
+                       tags$li("bmi: body mass index"),
+                       tags$li("smoking_status: 'formerly smoked', 'never smoked', 'smokes' or 'Unknown'"),
+                       tags$li("stroke: 1 if the patient had a stroke or 0 if not"))
+                   )),
             fluidRow( 
                 column(12,
                        h4('Purpose of each page'),
