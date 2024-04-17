@@ -14,19 +14,19 @@ The dataset employed in this application features 5,110 observations across 12 a
 
 The application is structured into four main pages:
 
-* Introduction Page: Here, you'll find detailed information about the data source, the purpose of the app, and its various components.
+- Introduction Page: Here, you'll find detailed information about the data source, the purpose of the app, and its various components.
 
-* Data Exploration Page: This page allows users to dive into the dataset through various numerical and graphical summaries. You can select different variables, choose the type of plot you wish to see, and generate specific summaries tailored to your interests.
+- Data Exploration Page: This page allows users to dive into the dataset through various numerical and graphical summaries. You can select different variables, choose the type of plot you wish to see, and generate specific summaries tailored to your interests.
 
-* Modeling Page: Divided into three tabs:
+- Modeling Page: Divided into three tabs:
 
- * Modeling Info: Discusses the methodologies used, such as Logistic Regression, Classification Trees, and Random Forests, including their advantages and limitations.
+  * Modeling Info: Discusses the methodologies used, such as Logistic Regression, Classification Trees, and Random Forests, including their advantages and limitations.
 
- * Model Fitting: Provides tools to select the train-test data split ratio, choose predictors, and build models through cross-validation on the training dataset. Performance metrics on the test dataset are also displayed here.
+  * Model Fitting: Provides tools to select the train-test data split ratio, choose predictors, and build models through cross-validation on the training dataset. Performance metrics on the test dataset are also displayed here.
 
- * Prediction: Offers a user-friendly interface to make predictions using updated parameters with the chosen model.
+  * Prediction: Offers a user-friendly interface to make predictions using updated parameters with the chosen model.
 
-* Data Page: Grants access to the full dataset and allows users to create subsets based on specific variables and conditions. You can also download selected data segments as a CSV file for offline analysis.
+- Data Page: Grants access to the full dataset and allows users to create subsets based on specific variables and conditions. You can also download selected data segments as a CSV file for offline analysis.
 
 This application aims to make Machine Learning more accessible and interactive, providing users with both the tools and knowledge to explore and predict health outcomes effectively. Stay tuned for updates and new features!
 
