@@ -19,15 +19,25 @@ shinyUI(
     
         tabPanel(
             title="Home",
-            fluidRow(img(src="dataset-cover.jpg")),
-            fluidRow(
-                  p("Welcome to our interactive Machine Learning platform, powered by Shiny! This sophisticated web-based application provides a comprehensive suite of analytical tools that enable you to dive deep into datasets through both numerical and graphical summaries. 
-                     Customize your analysis by selecting different variables, types of plots, and summary methods to explore data precisely as you need. 
-                     Our platform not only gives you full access to the dataset but also allows you to create and export subsets tailored by specific variables and conditions. 
-                     Additionally, you can build, compare, and evaluate the performance of various machine learning models, including Logistic Regression, Classification Tree, and Random Forest, using your chosen predictors. 
-                     Whether you're testing models on our provided dataset or predicting outcomes with new data inputs, our application is designed to enhance your data analysis experience and provide actionable insights.")
-                    ) # fluidRow
-                 ), # Home, tabPanel
+            fluidPage(
+                fluidRow(
+                    tags$br(),
+                    tags$img(src="dataset-cover.jpg", height = 200, width = 600, alt = "Image is from Kaggle", style = "margin-bottom: 20px;"),
+                    tags$br(),
+                    tags$br(),
+                    column(width = 8,
+                           tags$p("Welcome to our interactive Machine Learning platform, powered by Shiny!"),
+                           tags$p("This sophisticated web-based application provides a comprehensive suite of analytical tools that enable you to dive deep into datasets through both numerical and graphical summaries. 
+                          Customize your analysis by selecting different variables, types of plots, and summary methods to explore data precisely as you need."),
+                           tags$p("Our platform not only gives you full access to the dataset but also allows you to create and export subsets tailored by specific variables and conditions. 
+                          Additionally, you can build, compare, and evaluate the performance of various machine learning models, including Logistic Regression, Classification Tree, and Random Forest, using your chosen predictors. 
+                          Whether you're testing models on our provided dataset or predicting outcomes with new data inputs, our application is designed to enhance your data analysis experience and provide actionable insights."
+                           )
+                           )
+                    
+                    )# fluidRow
+                 )
+            ), # Home, tabPanel
     
         tabPanel(title="About",
             fluidRow(column(12,
