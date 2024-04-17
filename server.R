@@ -1,4 +1,5 @@
 library(shiny)
+library(shinythemes)
 library(readr)
 library(dplyr)
 library(summarytools)
@@ -7,6 +8,7 @@ library(DT)
 library(caret)
 library(corrplot)
 
+# Data cleaning
 stroke_data <- read_csv("data/healthcare-dataset-stroke-data.csv")
 stroke_data$heart_disease <- as.factor(stroke_data$heart_disease)
 stroke_data$hypertension <- as.factor(stroke_data$hypertension)
@@ -18,6 +20,7 @@ stroke_data$Residence_type <- as.factor(stroke_data$Residence_type)
 stroke_data$smoking_status <- as.factor(stroke_data$smoking_status)
 stroke_data$bmi <- as.numeric(stroke_data$bmi)
 
+# Server
 shinyServer(function(input, output) {
 
     #EDA descriptive
