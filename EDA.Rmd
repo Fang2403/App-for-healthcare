@@ -1,0 +1,96 @@
+---
+title: "EDA"
+output:
+  html_document:
+    toc: yes
+    code_folding: hide
+    df_print: paged
+  pdf_document:
+    toc: yes
+---
+
+```{r}
+knitr::opts_chunk$set(message=FALSE, warning = FALSE, tidy.opts=list(width.cutoff=55))
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(mosaic)  # standardizing variables
+library(ggplot2)
+library(ggcorrplot)
+library(GGally)
+```
+
+# Load the Data
+
+```{r}
+# Set the correct path to the file
+file_path <- "./data/healthcare-dataset-stroke-data.csv"
+
+# Load the dataset
+data <- read.csv(file_path)
+```
+
+# Inspect the Data
+
+## Variable Information:
+
+```{r}
+# View the first few rows of the dataset
+head(data)
+
+# structure
+str(data)
+
+# Summarize the dataset to get a quick overview
+summary(data)
+
+```
+
+
+* id: unique identifier
+* gender: 'Male', 'Female' or 'Other'
+* age: age of the patient
+* hypertension: 0 if the patient doesn't have hypertension, 1 if the patient has hypertension
+* heart_disease: 0 if the patient doesn't have any heart diseases, 1 if the patient has a heart disease
+* ever_married: 'No' or 'Yes'
+* work_type: 'children', 'Govt_jov', 'Never_worked', 'Private' or 'Self-employed'
+* Residence_type: 'Rural' or 'Urban'
+* avg_glucose_level: average glucose level in blood
+* bmi: body mass index
+* smoking_status: 'formerly smoked', 'never smoked', 'smokes' or 'Unknown'
+* stroke: 1 if the patient had a stroke or 0 if not
+
+
+```{r}
+
+# Check for missing values
+colSums(is.na(data))
+```
+# EAD
+
+Visualizes the dataset's age distribution using a histogram, and generates a correlation matrix plot for numeric columns.
+```{r}
+#drop ID
+data_ana <- data %>% select(-id)
+data_ana$bmi <- as.numeric(factor(data$bmi))-1
+
+# Plotting age distribution
+ggplot(data_ana, aes(x=age)) + geom_histogram(bins=30, fill='blue', color='black') + ggtitle('Age Distribution')
+
+# Plotting correlation matrix
+corr <- cor(select_if(data_ana, is.numeric))
+corr
+#plot the correlation matrix
+ggcorrplot(corr, method='circle', hc.order=FALSE, type='lower', lab=TRUE)
+
+```
+
+```{r}
+# Boxplot for comparing bmi across different stroke outcomes
+ggplot(data, aes(x = as.factor(stroke), y = bmi, fill = as.factor(stroke))) +
+  geom_boxplot() +
+  labs(x = "Stroke (1 = Yes, 0 = No)", y = "BMI") +
+  ggtitle("BMI Distribution by Stroke Outcome")
+```
