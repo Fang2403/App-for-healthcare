@@ -1,12 +1,34 @@
-# App-for-healthcare
+# Development of an Interactive Stroke Prediction Tool 
 
-## App Overview
+## Project Overview
 
-I am going to create an interactive Machine Learning multiple-page Shiny application. R Shiny is a package from RStudio that makes it incredibly easy to build an interactive web application with R. R Shiny is awesome in the sense that it automatically update outputs when inputs change.
+### Introduction to the ML Shiny App
 
-The data used here contains 5110 observations with 12 attributes like gender, age, various diseases, and smoking status from [Kaggle](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset). Through this app users can explore the data features and predict whether a patient is likely to get stroke based on the input parameters.
+Welcome to my interactive Machine Learning application built using R Shiny, a powerful package from RStudio that facilitates the creation of interactive web applications using R. This application is designed to dynamically update its outputs based on user inputs, offering a seamless and responsive user experience.
 
-The application will consist of an introduction page, a data exploration page, a modeling page and a data page. In introduction page, source of the data, the purpose and components of the app will be described. In data exploration page, users can explore data through different type of numerical and graphical summaries. Users have access to choose variables, type of plot and summary reported. In modeling page, there are modeling info, model fitting and prediction three tabs. In modeling info tab, I will discuss Logistic Regression, Classification Tree and Random Forest approaches, the benefits and drawbacks of them. In model fitting tab, users have access to choose proportion to split the data into train data and test data set, choose predictors to build three different model via corss validation on train data set. Their performance on the test data set are provided as well. In prediction tab, users can use one of the three models for prediction on updated parameters. In data page, users have access to the full data and subset with user specific variables and conditions. Users are also able to save selected data as a .csv file. 
+### Data Description
+
+The dataset employed in this application features 5,110 observations across 12 attributes, including gender, age, various health conditions, and smoking status, sourced from [Kaggle](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset). This rich dataset provides the foundation for predicting stroke likelihood based on various input parameters.
+
+### Application Structure
+
+The application is structured into four main pages:
+
+* Introduction Page: Here, you'll find detailed information about the data source, the purpose of the app, and its various components.
+
+* Data Exploration Page: This page allows users to dive into the dataset through various numerical and graphical summaries. You can select different variables, choose the type of plot you wish to see, and generate specific summaries tailored to your interests.
+
+* Modeling Page: Divided into three tabs:
+
+ * Modeling Info: Discusses the methodologies used, such as Logistic Regression, Classification Trees, and Random Forests, including their advantages and limitations.
+
+ * Model Fitting: Provides tools to select the train-test data split ratio, choose predictors, and build models through cross-validation on the training dataset. Performance metrics on the test dataset are also displayed here.
+
+ * Prediction: Offers a user-friendly interface to make predictions using updated parameters with the chosen model.
+
+* Data Page: Grants access to the full dataset and allows users to create subsets based on specific variables and conditions. You can also download selected data segments as a CSV file for offline analysis.
+
+This application aims to make Machine Learning more accessible and interactive, providing users with both the tools and knowledge to explore and predict health outcomes effectively. Stay tuned for updates and new features!
 
 ## Required packages
 
