@@ -30,25 +30,29 @@ The application is structured into four main pages:
 
 This application aims to make Machine Learning more accessible and interactive, providing users with both the tools and knowledge to explore and predict health outcomes effectively. Stay tuned for updates and new features!
 
-## Required packages
+## Key R Packages Used
 
-* shiny -- framework for building interactive web applications with R
+This project leverages several powerful R packages to build an interactive web application and handle data efficiently:
 
-* readr -- providing a fast and friendly way to parse many type of data
+Shiny: A framework for creating interactive web applications directly in R. Shiny makes it straightforward to build interactive user interfaces that can connect seamlessly with R analytics.
 
-* dplyr -- dplyr is a grammar of data manipulation, providing a consistent set of verbs that solve the most common data manipulation challenges
+Readr: Provides a fast and user-friendly way to read and parse various types of data files in R. It is designed to simplify the process of importing data and to increase performance.
 
-* corrplot -- providing a visual exploratory tool on correlation matrix that supports automatic variable reordering to help detect hidden patterns among variables
+Dplyr: Known as a grammar of data manipulation, this package offers a consistent set of verbs that address the most common data manipulation challenges, making data operations more intuitive.
 
-* summarytools -- providing a coherent set of functions centered on data exploration and simple reporting
+Corrplot: Offers a visual exploratory tool on correlation matrices. It includes automatic variable reordering which assists in unveiling hidden patterns among variables, crucial for comprehensive data analysis.
 
-* ggplot2 -- declaratively creating graphics, based on the grammar of graphics.
+SummaryTools: Delivers a unified set of tools focused on data exploration and basic reporting. This package simplifies the initial data analysis process, providing quick and informative summaries.
 
-* DT -- providing an R interface to the JavaScript library DataTables. R data objects (matrices or data frames) can be displayed as tables on HTML pages, and DataTables provides filtering, pagination, sorting, and many other features in the tables.
+Ggplot2: A system for 'declaratively' creating graphics, based on the Grammar of Graphics. This package allows you to create complex plots from data in a dataframe with a high degree of customization.
 
-* caret -- a set of functions that attempt to streamline the process for creating predictive models.
+DT: Provides an R interface to the JavaScript library 'DataTables'. This integration allows R data objects like matrices or data frames to be displayed as interactive tables on HTML pages, equipped with features such as filtering, pagination, and sorting.
 
-* bslib -- providing tools for customizing Bootstrap themes directly from R, making it much easier to customize the appearance of Shiny apps & R Markdown documents.
+Caret: Streamlines the process of creating predictive models by providing a suite of functions that are both flexible and powerful for modeling.
+
+Bslib: Offers tools to customize Bootstrap themes directly from R. It significantly eases the customization of both Shiny applications and R Markdown documents, enhancing their aesthetic and functional qualities.
+
+Each of these packages plays a vital role in the development of our application, from the backend data handling to the frontend user interaction.
 
 Please use following code to install required packages:
 
@@ -58,4 +62,4 @@ Please use following code to install required packages:
 
 Please run following code in the R console to launch the app:
 
-`shiny::runGitHub("App-for-healthcare", "Fang2403")`
+`shiny::runGitHub("Development-of-an-Interactive-Stroke-Prediction-Tool", "Fang2403")`
