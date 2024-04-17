@@ -12,31 +12,49 @@ col_names <- names(stroke_data)
 
 shinyUI( navbarPage( title="Stroke",
     theme = bs_theme(),
+    
+    tabPanel(title="Home",
+             fluidRow(img(src="dimage/ataset-cover.jpg")),
+             fluidRow(
+                 column(10,
+                        h4("Application Description"),
+                        p("Welcome to our interactive Machine Learning platform, powered by Shiny! This sophisticated web-based application provides a comprehensive suite of analytical tools that enable you to dive deep into datasets through both numerical and graphical summaries. 
+                     Customize your analysis by selecting different variables, types of plots, and summary methods to explore data precisely as you need. 
+                     Our platform not only gives you full access to the dataset but also allows you to create and export subsets tailored by specific variables and conditions. 
+                     Additionally, you can build, compare, and evaluate the performance of various machine learning models, including Logistic Regression, Classification Tree, and Random Forest, using your chosen predictors. 
+                     Whether you're testing models on our provided dataset or predicting outcomes with new data inputs, our application is designed to enhance your data analysis experience and provide actionable insights.")
+                        )
+                 )
+            ),
+    
     tabPanel(title="About",
-        fluidRow(img(src="dataset-cover.jpg")),
-        fluidRow(
-            column(10,
-                h4("App Overview"),
-                   p("This is a web-based interactive Machine Learning multiple-page Shiny application. Through this app, users can explore the data via different type of numerical and graphical summaries. Users have access to choose variables to explore and choose type of plots and summaries to report. Users also have access to the full data, subset data with specific variables and conditions and to save them as external file. Logistic Regression, Classification Tree and Random Forest models are going to be built on the train data set with user chosen predictors. Their perfomance on test data set are provided as well. Users can obtain predictions on new predictor values using built models."))),
+       
         fluidRow(
             column(12,
-                   h4("Data"),
-                   p("According to the World Health Organization (WHO) stroke is the 2nd leading cause of death globally, responsible for approximately 11% of total deaths. The data used here contains 5110 observations with 12 attributes like gender, age, various diseases, and smoking status from ", a("Kaggle", href="https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset"), ". Each row in the data provides relavant information about the patient. We hope to predict whether a patient is likely to get stroke based on the input parameters. "),
-                   p("Variable Information:"),
+                   
+                  p("Our platform utilizes a dataset crucial for understanding and predicting stroke, which is the second leading cause of death worldwide according to the World Health Organization (WHO), accounting for about 11% of all deaths globally. 
+                    The dataset, sourced from Kaggle", a("Kaggle", href="https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset"),", comprises 5,110 observations across 12 key attributes, including demographic details, health conditions, and lifestyle choices of patients. 
+                    Each record in the dataset is rich with individual patient information, designed to help predict the likelihood of a stroke occurring based on various input parameters."),
+                  
+                   p("Here is a brief overview of the variables included in our dataset:"),
                    tags$ul(
-                       tags$li(" id: unique identifier"),
-                       tags$li("gender: 'Male', 'Female' or 'Other'"),
-                       tags$li("age: age of the patient"),
-                       tags$li("hypertension: 0 if the patient doesn't have hypertension, 1 if the patient has hypertension"),
-                       tags$li("heart_disease: 0 if the patient doesn't have any heart diseases, 1 if the patient has a heart disease"),
-                       tags$li(" ever_married: 'No' or 'Yes'"),
-                       tags$li("work_type: 'children', 'Govt_jov', 'Never_worked', 'Private' or 'Self-employed'"),
-                       tags$li("Residence_type: 'Rural' or 'Urban'"),
-                       tags$li("avg_glucose_level: average glucose level in blood"),
-                       tags$li("bmi: body mass index"),
-                       tags$li("smoking_status: 'formerly smoked', 'never smoked', 'smokes' or 'Unknown'"),
-                       tags$li("stroke: 1 if the patient had a stroke or 0 if not"))
-                   )),
+                       tags$li("id: A unique identifier for each patient."),
+                       tags$li("gender: The patient's gender, categorized as 'Male', 'Female', or 'Other'."),
+                       tags$li("age: The age of the patient."),
+                       tags$li("hypertension: Indicates whether the patient suffers from hypertension (1) or not (0)."),
+                       tags$li("heart_disease: Indicates the presence (1) or absence (0) of heart disease in the patient."),
+                       tags$li("ever_married: Whether the patient has ever been married ('Yes' or 'No')."),
+                       tags$li("work_type: The patient's type of employment, which includes categories like 'children', 'Govt_job', 'Never_worked', 'Private', and 'Self-employed'."),
+                       tags$li("Residence_type: The patient's living environment, classified as 'Rural' or 'Urban'."),
+                       tags$li("avg_glucose_level: The average level of glucose in the patient’s blood."),
+                       tags$li("bmi: Body Mass Index, a key indicator of body fat based on height and weight."),
+                       tags$li("smoking_status: Smoking habits of the patient, categorized as 'formerly smoked', 'never smoked', 'smokes', or 'Unknown'."),
+                       tags$li("stroke: Indicates if the patient has had a stroke (1) or not (0)."))
+                   ),
+                p("Our application aims to leverage this detailed data to aid in predicting stroke risks, thereby contributing to preventive health strategies.")
+            ),
+        
+        
             fluidRow( 
                 column(12,
                        h4('Purpose of each page'),
