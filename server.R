@@ -70,24 +70,41 @@ shinyServer(function(input, output) {
     output$frequency <- renderTable(
        table(data3()[,c(input$fact_var1,input$fact_var2)]) 
     )
-
     
-    # graphic panel
-    data4 <- eventReactive(input$hist, {
-        if(input$fil1=="Yes"){
-            data = stroke_data %>% filter(eval(rlang::parse_expr(input$plotNumVar3)))
-        } else {
-            data = stroke_data
-        }
-    })
-    
-    histogram <- eventReactive(input$hist,{
-        if(input$group=="No"){
-            ggplot(data4(), aes(x=!!sym(input$plotNumVar))) + 
-                geom_histogram()
-        } else {
-            ggplot(data4(), aes(x=!!sym(input$plotNumVar))) + 
-                geom_histogram(aes(fill=!!sym(input$plotNumVar2)), position="dodge")
+    histogram <- eventReactive(list(input$plotoption, input$plotNumVar, input$group, input$bins, input$plotNumVar3, input$plotNumVar2),{
+        # prepare data
+        if(input$plotoption == 'Histogram'){
+            if(input$fil1 == "Yes"){
+                # Using rlang::parse_expr to parse the filter expression
+                data4 <- stroke_data %>% filter(!!rlang::parse_expr(input$plotNumVar3))
+                if(input$group=="Yes"){
+                    title_h <- paste("Stacked Histogram of", input$plotNumVar, 'Across ', input$plotNumVar2, 'When ', input$plotNumVar3)
+                } else {
+                    title_h <- paste("Histogram of", input$plotNumVar, 'When ', input$plotNumVar3)
+                }
+            } else {
+                data4 <- stroke_data
+                if(input$group=="Yes"){
+                    title_h <- paste("Stacked Histogram of", input$plotNumVar, 'Across ', input$plotNumVar2)
+                } else {
+                    title_h <- paste("Histogram of", input$plotNumVar)
+                }
+            }
+            # bins
+            bins <- seq(min(data4[[input$plotNumVar]], na.rm=TRUE), max(data4[[input$plotNumVar]], na.rm=TRUE), length.out=input$bins+1)
+            # plot
+            if(input$group=="No"){
+                #histogram with input bins and set color as blue border as black set x label and title
+                ggplot(data4, aes(x=!!sym(input$plotNumVar))) + 
+                    geom_histogram(fill="blue", color="black", breaks=bins) +
+                    xlab(input$plotNumVar) + 
+                    ggtitle(title_h)
+            } else {
+                    ggplot(data4, aes(x=!!sym(input$plotNumVar), fill=!!sym(input$plotNumVar2))) + 
+                    geom_histogram( position="stack", color='black', breaks=bins, alpha=0.6) +
+                    xlab(input$plotNumVar) + 
+                    ggtitle(title_h)
+            }
         }
     })
     

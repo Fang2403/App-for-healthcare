@@ -164,83 +164,134 @@ shinyUI(
               
                ), # Frequency Tables, subtab
                
-               tabPanel( title="Plot",
+               tabPanel( #title="Plot",
+                        titlePanel("Plot"),
+                        #sidebar layout with input and output definitions
                          sidebarLayout(
+                             # sidebar panel for input
                              sidebarPanel(
-                                 radioButtons("plotoption", "Choose the Option:", 
-                                              choices = c("Histogram", "BarPlot", "Scatter", "BoxPlot" )),
-                                 conditionalPanel(condition="input.plotoption=='Histogram'",
-                                                  selectInput("plotNumVar", "Choose Numeric Varibale ", 
+                                 # numeric or factor variable
+                                 radioButtons("vcat", "Numeric or categoric variables?", 
+                                              choices = c("Numeric", "Categoric" )),
+                                 
+                                 conditionalPanel(condition="input.vcat=='Numeric'",
+                                    # choose plot type
+                                    
+                                    radioButtons("plotoption", "Plot type:", 
+                                                  choices = c("Histogram", 'Scatter', "BoxPlot")),
+                                    
+                                    # histogram plot
+                                    conditionalPanel(condition="input.plotoption=='Histogram'",
+                                                  # variable selection
+                                                  selectInput("plotNumVar", "Target varibale ", 
                                                               choices = num_name, selected = "age"),
+                                                  # chose number of bins
+                                                  sliderInput("bins", "Number of bins", 
+                                                              value = 20, min = 10, max = 50, step=5),
+                                                  # if plot across group 
                                                   selectInput("group", 
-                                                               "Do you want to plot across diffenrent groups?",
+                                                               "Across diffenrent groups?",
                                                               choices=c("Yes", "No"), selected="No"),
+                                                  # group variable selection
                                                   conditionalPanel(condition="input.group=='Yes'",
-                                                                   selectInput("plotNumVar2", "Choose Group Varibale",
+                                                                   selectInput("plotNumVar2", "Group varibale",
                                                                                choices = append(fact_name, ""), 
                                                                                selected = "")),
+                                                  # if filter the data?
                                                   selectInput("fil1", 
-                                                              "Do you want to filter the data?",
+                                                              "Filter the data?",
                                                               choices=c("Yes", "No"), selected="No"),
+                                                  # filter input
                                                   conditionalPanel(condition="input.fil1=='Yes'",
                                                                    textInput("plotNumVar3", "filter rows", 
                                                                              value="", 
                                                                              placeholder = "Provide a filter (e.g., age>50 or gender=='Male') ")),
-                                                  actionButton("hist", "Plot Histogram")
+                                                  # action button
+                                                  #actionButton("hist", "Plot Histogram")
                                                   ),
-                                 conditionalPanel(condition="input.plotoption=='BarPlot'",
-                                                  selectInput("plotFactVar", "Choose Categorical Varibale",
-                                                              choices = fact_name, selected = "stroke"),
-                                                  selectInput("fil2", 
-                                                              "Do you want to filter the data?",
-                                                              choices=c("Yes", "No"), selected="No"),
-                                                  conditionalPanel(condition="input.fil2=='Yes'",
-                                                                   textInput("plotFactVar2", "filter rows", 
-                                                                             value="", 
-                                                                             placeholder = "Provide a filter (e.g., age>50 or gender=='Male') ")),
-                                                  actionButton("bar", "Plot Bar Plot")
-                                                  ),
-                                 conditionalPanel(condition="input.plotoption=='Scatter'",
+                                    # scatter plot
+                                    conditionalPanel(condition="input.plotoption=='Scatter'",
+                                                  # select variables
                                                   selectInput("plotVar1", "Choose Numeric Varibale 1", 
                                                               choices = num_name, selected = "age"),
                                                   selectInput("plotVar2", "Choose Numeric Varibale 2", 
                                                               choices = num_name, 
                                                               selected = "avg_glucose_level"),
+                                                  # if across group?
                                                   selectInput("group2", 
                                                               "Do you want to plot across diffenrent groups?",
                                                               choices=c("Yes", "No"), selected="No"),
+                                                  # group variable selection
                                                   conditionalPanel(condition="input.group2=='Yes'",
                                                                    selectInput("plotVar3", "Choose Group Varibale",
                                                                                choices = append(fact_name, ""), 
                                                                                selected = "")),
+                                                  # if filter the data?
                                                   selectInput("fil3", 
                                                               "Do you want to filter the data?",
                                                               choices=c("Yes", "No"), selected="No"),
+                                                  # filter input
                                                   conditionalPanel(condition="input.fil3=='Yes'",
                                                                    textInput("plotVar4", "filter rows", 
                                                                              value="", placeholder = 
                                                                                  "Provide a filter (e.g., age>50 or gender=='Male') ")),
+                                                  # action button
                                                   actionButton("scatter", "Plot Scatter Plot")
-                                                  ),
-                                 conditionalPanel(condition="input.plotoption=='BoxPlot'",
+                                    ),
+                                    
+                                    # box plot
+                                    conditionalPanel(condition="input.plotoption=='BoxPlot'",
+                                                  # select variable
                                                   selectInput("plotbox", "Choose Numeric Varibale ", 
                                                               choices = num_name, selected = "age"),
+                                                  # if across group?
                                                   selectInput("group3", 
                                                               "Do you want to plot across diffenrent groups?",
                                                               choices=c("Yes", "No"), selected="No"),
+                                                  # group variable selection
                                                   conditionalPanel(condition="input.group3=='Yes'",
                                                                    selectInput("plotbox2", "Choose Group Varibale",
                                                                                choices = append(fact_name, ""), 
                                                                                selected = "")),
+                                                  # if filter the data?
                                                   selectInput("fil4", 
                                                               "Do you want to filter the data?",
                                                               choices=c("Yes", "No"), selected="No"),
+                                                  # filter input
                                                   conditionalPanel(condition="input.fil4=='Yes'",
                                                                    textInput("plotbox3", "filter rows", 
                                                                              value="", placeholder = 
                                                                                  "Provide a filter (e.g., age>50 or gender=='Male') ")),
-                                                  actionButton("box", "Plot Box Plot"))
+                                                  # action button
+                                                  actionButton("box", "Plot Box Plot")
+                                                  )
+                               
+                                    ),
+                                 conditionalPanel(condition="input.cat=='Categoric'",
+                                                  radioButtons("plotoption", "Choose the Option:", 
+                                                              choices = c( "BarPlot" )),
+                                        # bar plot
+                                        conditionalPanel(condition="input.plotoption=='BarPlot'",
+                                                  # select variable
+                                                  selectInput("plotFactVar", "Choose Categorical Varibale",
+                                                              choices = fact_name, selected = "stroke"),
+                                                  # if filter the data?
+                                                  selectInput("fil2", 
+                                                              "Do you want to filter the data?",
+                                                              choices=c("Yes", "No"), selected="No"),
+                                                  # filter input
+                                                  conditionalPanel(condition="input.fil2=='Yes'",
+                                                                   textInput("plotFactVar2", "filter rows", 
+                                                                             value="", 
+                                                                             placeholder = "Provide a filter (e.g., age>50 or gender=='Male') ")),
+                                                  # action button
+                                                  actionButton("bar", "Plot Bar Plot")
+                                                  )
+                                 
+                                    )
                             ),
+                            
+                            # main panel(output)
                              mainPanel(
                                  h3("Plots"),
                                  fluidRow(
@@ -248,8 +299,8 @@ shinyUI(
                                  )
                              )
                          )
-               )
-        ), # Plot, subtab
+                     )# Plot, subtab
+        ), # Data Exploration, navbarMenu
     
         tabPanel(title="Modeling",
             tabsetPanel(
