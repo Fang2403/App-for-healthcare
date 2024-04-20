@@ -238,11 +238,18 @@ shinyServer(function(input, output) {
          # Make sure it closes when we exit this reactive, even if there's an error
          on.exit(progress$close())
          
+         if(length(input$logrvar) > 1){
+             features <- paste(input$logrvar, collapse= "+")
+         } else {
+             features <- input$logrvar
+         }
+         
          progress$set(message = "Making random forest model", value = 10)
-         randomForest_fit = train(as.formula(paste("stroke ~", paste(input$logrvar, collapse= "+"))),  
-                          data=split()$train, method="rf", ntree=10,
+         
+         randomForest_fit = train(as.formula(paste("stroke ~", features)),  
+                          data=split()$train, method="rf", ntree=2,
                           trControl=trainControl(method="cv", input$k),
-                          tuneGrid=data.frame(mtry=2:length(input$logrvar)))
+                          tuneGrid=data.frame(mtry=1:length(input$logrvar)))
      })   
      output$randomForestOutput <- renderPrint({
          print(randomForestmodel()$results)

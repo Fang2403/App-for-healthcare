@@ -304,6 +304,7 @@ shinyUI(
     
         tabPanel(title="Modeling",
             tabsetPanel(
+                # Modeling Info
                 tabPanel(title="Modeling Info",
                     wellPanel(
                         h3("Logistic Regression"),
@@ -354,9 +355,10 @@ shinyUI(
                             tags$li("computationally expensive"))
                     )
                 ),
-            
+                
+                # Training
                 tabPanel(
-                    title="Model Fitting",
+                    title="Model Training",
                     fluidRow(
                         column(4,
                            sliderInput("logrprop", "Select Proportion to Split the Data", 
@@ -365,14 +367,14 @@ shinyUI(
                            selectInput("logrvar", "Select Variables to build the Model", 
                                        choices = c("age", "avg_glucose_level","gender", "hypertension",
                                                    "heart_disease", "ever_married", "work_type",
-                                                   "Residence_type", "smoking_status"), 
+                                                   "Residence_type", "smoking_status", 'all'), 
                                        selected = "", 
                                        multiple=TRUE)),
                         column(4,
                            numericInput("k", "Number of CV Folders", 
                                         value = 5, step=1, min=3, max=10))
                         ),
-                    fluidRow(actionButton("fitmodel", "Are you ready to fit the model?"),
+                    fluidRow(actionButton("fitmodel", "Are you ready to train the model?"),
                                 align="center"),
                     fluidRow(
                         h4("Logistic Model Summary"),
@@ -403,7 +405,7 @@ shinyUI(
                         verbatimTextOutput("accuracy3")
                            )
                 ),
-            
+                # Prediction
                 tabPanel(
                     title="Prediction",
                     sidebarLayout(
